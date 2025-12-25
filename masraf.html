@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>۱۰ راه ساده برای مصرف بهینه برق | EnergyWise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00695c;
+            --secondary: #0097a7;
+            --accent: #ffd740;
+            --light: #e0f7fa;
+            --dark: #004d40;
+            --glow: rgba(255,215,64,0.5);
+            --bolt: #ffeb3b;
+        }
+        body {
+            margin: 0;
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #004d40, #00695c, #0097a7);
+            background-attachment: fixed;
+            color: var(--white);
+            line-height: 1.9;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* ذرات برق و جرقه در پس‌زمینه */
+        .electric-particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .bolt-particle {
+            position: absolute;
+            font-size: 40px;
+            color: var(--bolt);
+            opacity: 0.6;
+            animation: boltFall 15s infinite linear;
+            text-shadow: 0 0 25px var(--accent);
+        }
+        .spark-particle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, var(--accent), transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 35px var(--accent);
+            animation: sparkRise 20s infinite linear;
+            opacity: 0.7;
+        }
+        @keyframes boltFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes sparkRise {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) translateX(80px); opacity: 0; }
+        }
+        /* دکمه بازگشت */
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 32px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.4s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .home-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,151,167,0.6);
+        }
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+            color: white;
+            text-align: center;
+            padding: 120px 20px 90px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        header h1 {
+            font-size: 3.8em;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.7);
+        }
+        header p {
+            font-size: 1.6em;
+            max-width: 1000px;
+            margin: 30px auto 0;
+            opacity: 0.95;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 20px;
+            z-index: 1;
+        }
+        .intro {
+            background: rgba(255,255,255,0.15);
+            padding: 50px;
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            margin-bottom: 70px;
+            text-align: center;
+            font-size: 1.3em;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 800;
+            margin: 80px 0 50px;
+            color: var(--white);
+            text-shadow: 0 5px 15px rgba(0,0,0,0.6);
+        }
+        .tips {
+            display: grid;
+            gap: 40px;
+        }
+        .tip {
+            background: rgba(255,255,255,0.15);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .tip:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(0,151,167,0.5);
+        }
+        .tip img {
+            width: 100%;
+            height: 350px; /* بزرگ‌تر شد (از 250px به 350px) */
+            object-fit: cover;
+            border-bottom: 5px solid var(--accent);
+            transition: transform 0.5s;
+        }
+        .tip:hover img {
+            transform: scale(1.1);
+        }
+        .tip-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .tip-number {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--dark);
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            border-radius: 50%;
+            font-size: 1.8em;
+            margin-left: 20px;
+            box-shadow: 0 0 20px var(--glow);
+        }
+        .tip-content {
+            padding: 40px;
+            font-size: 1.2em;
+            color: var(--light);
+        }
+        .tip-content ul {
+            padding-right: 40px;
+        }
+        .tip-content ul li {
+            margin-bottom: 22px;
+            position: relative;
+            padding-right: 35px;
+        }
+        .tip-content ul li::before {
+            content: "✅";
+            position: absolute;
+            right: -10px;
+            font-size: 1.5em;
+        }
+        .conclusion {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            color: white;
+            padding: 90px 60px;
+            border-radius: 40px;
+            text-align: center;
+            margin: 100px 0;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+            font-size: 1.4em;
+        }
+        .conclusion h2 {
+            font-size: 3.2em;
+            margin-bottom: 40px;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+        footer {
+            text-align: center;
+            padding: 50px;
+            background: var(--dark);
+            color: white;
+            font-size: 1.2em;
+        }
+        /* کنترل موزیک */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1.1em;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .music-control button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<!-- ذرات برق و جرقه -->
+<div class="electric-particles" id="electric-particles"></div>
+<!-- دکمه بازگشت -->
+<a href="index.html" class="home-btn">
+    <i class="fas fa-home"></i> بازگشت به خانه
+</a>
+<header>
+    <h1>🔌 ۱۰ راه ساده برای مصرف بهینه برق</h1>
+    <p>پول و انرژی‌تان را ذخیره کنید! با تغییرات کوچک، تأثیر بزرگ ایجاد کنید 🌱</p>
+    <p>منبع : سایت خانه بوش <a href="https://khanebosch.com/blog/reducing-electricity-consumption-in-the-use-of-household-appliances/">ورود به سایت</a> نکته متن موجود در این صفحه خلاصه و نتیجه صفحه اصلی است</p>
+</header>
+<div class="container">
+    <div class="intro">
+        <p>بیشتر ما فکر می‌کنیم صرفه‌جویی در مصرف برق یعنی «لامپ را خاموش کنیم» — درحالی‌که مصرف انرژی الکتریکی در خانه‌ها بسیار پیچیده‌تر از آن است. با انجام تغییرات کوچک ولی هوشمندانه، نه‌تنها قبض برق خود را کاهش می‌دهید، بلکه به محیط‌زیست هم کمک می‌کنید.</p>
+        <p>در این مطلب، مهم‌ترین راهکارهای عملی، ارزان و مؤثر برای مصرف بهینه برق را بررسی می‌کنیم:</p>
+    </div>
+    <div class="tips">
+        <!-- نکته ۱ -->
+        <div class="tip">
+            <img src="https://aparoz.com/mag/wp-content/uploads/2024/04/%D9%85%D8%B2%D8%A7%DB%8C%D8%A7%DB%8C-%D8%A7%D8%B3%D8%AA%D9%81%D8%A7%D8%AF%D9%87-%D8%A7%D8%B2-%D9%84%D8%A7%D9%85%D9%BE-LED-%D8%A7%D9%84-%D8%A7%DB%8C-%D8%AF%DB%8C-%E2%80%8C-%DB%B1%DB%B0-%D8%AF%D9%84%DB%8C%D9%84-%D8%A7%D8%B3%D8%A7%D8%B3%DB%8C.png" alt="مقایسه مصرف لامپ‌ها">
+            <div class="tip-header">
+                <span class="tip-number">۱</span> از لامپ‌های LED استفاده کنید
+            </div>
+            <div class="tip-content">
+                <p>لامپ‌های LED تا ۸۰٪ انرژی کمتری نسبت به لامپ‌های رشته‌ای و حتی کم‌مصرف (CFL) مصرف می‌کنند و عمر بسیار بیشتری دارند. علاوه بر این، حرارت کمتری تولید می‌کنند — پس تابستان‌ها هم بار کمتری به سیستم سرمایشی خانه می‌آورند.</p>
+                <p><strong>💡 نکته:</strong> هنگام خرید، به برچسب انرژی روی لامپ توجه کنید — کلاس «A» یا «A+» بهترین گزینه است.</p>
+            </div>
+        </div>
+        <!-- نکته ۲ -->
+        <div class="tip">
+            <img src="https://fritz.ir/wp-content/uploads/2023/03/%DB%8C%D8%AE%DA%86%D8%A7%D9%84-%D9%87%D8%A7%DB%8C-%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF.png" alt="مصرف برق یخچال">
+            <div class="tip-header">
+                <span class="tip-number">۲</span> یخچال و فریزر را هوشمندانه استفاده کنید
+            </div>
+            <div class="tip-content">
+                <p>یخچال یکی از پر مصرف‌ترین لوازم خانه است — و ۲۴ ساعت در روز روشن است!</p>
+                <ul>
+                    <li>درب یخچال را بیش از حد لازم باز نگذارید.</li>
+                    <li>فاصله‌ی مناسبی بین دیوار و پشت یخچال بگذارید (حداقل ۱۰ سانتی‌متر) تا هوای گرم خارج شود.</li>
+                    <li>یخچال را پر از مواد غذایی نکنید — هوا باید درون آن جریان داشته باشد.</li>
+                    <li>دمای مناسب: ۴ تا ۵ درجه سانتی‌گراد برای یخچال و منهای ۱۸ درجه برای فریزر.</li>
+                </ul>
+            </div>
+        </div>
+        <!-- نکته ۳ -->
+        <div class="tip">
+            <img src="https://parsatahviyeh.ir/wp-content/uploads/2024/04/Suitable-degree-of-air-conditioner-and-split-in-summer.webp" alt="تنظیم کولر گازی">
+            <div class="tip-header">
+                <span class="tip-number">۳</span> کولر گازی و اسپلیت را بهینه تنظیم کنید
+            </div>
+            <div class="tip-content">
+                <ul>
+                    <li>دمای ایده‌آل تابستانه: ۲۴ تا ۲۶ درجه سانتی‌گراد. هر درجه کاهش دما، مصرف برق را ۶ تا ۸٪ افزایش می‌دهد!</li>
+                    <li>پرده‌های ضد آفتاب را در ساعات گرم روز ببندید.</li>
+                    <li>فیلترهای کولر گازی را حداقل هر ماه یک‌بار تمیز کنید — فیلترهای کثیف باعث افزایش ۱۵٪ مصرف انرژی می‌شوند.</li>
+                </ul>
+            </div>
+        </div>
+        <!-- نکته ۴ -->
+        <div class="tip">
+            <img src="https://cdn.al-ain.com/images/2024/9/18/261-204745-screenshot-2024-09-18-20-15-40-953-com.android.chrome-edit_700x400.jpg" alt="مصرف پنهان برق">
+            <div class="tip-header">
+                <span class="tip-number">۴</span> در حالت خواب دستگاه ها را خاموش کنید
+            </div>
+            <div class="tip-content">
+                <p>حتی وقتی تلویزیون، کنسول بازی یا شارژر گوشی خاموش است ولی در پریز باقی مانده، همچنان "مصرف خفیف" (Phantom Load) دارد. سالانه این مصرف پنهان می‌تواند معادل ۱۰٪ از کل قبض برق شما باشد!</p>
+                <p><strong>✅ راه‌حل:</strong> از پریزهای هوشمند یا چندراهی با کلید قطع استفاده کنید و شب‌ها همه را خاموش کنید.</p>
+            </div>
+        </div>
+        <!-- نکته ۵ -->
+        <div class="tip">
+            <img src="https://khanebosch.com/wp-content/uploads/2023/10/%D8%AF%D8%B1-%D8%B1%D9%88%D8%B2-%DA%86%D9%86%D8%AF-%D8%A8%D8%A7%D8%B1-%D9%85%DB%8C%D8%AA%D9%88%D8%A7%D9%86-%D8%A7%D8%B2-%D9%85%D8%A7%D8%B4%DB%8C%D9%86-%D9%84%D8%A8%D8%A7%D8%B3%D8%B4%D9%88%DB%8C%DB%8C-%D8%A7%D8%B3%D8%AA%D9%81%D8%A7%D8%AF%D9%87-%DA%A9%D8%B1%D8%AF.webp" alt="مصرف پنهان برق">
+            <div class="tip-header">
+                <span class="tip-number">۵</span> ماشین‌لباس‌شویی و ظرف‌شویی در ساعات سرد روز و با بار کامل
+            </div>
+            <div class="tip-content">
+                <ul>
+                    <li>از برنامه‌های آب گرم کم‌مصرف استفاده کنید.</li>
+                    <li>لباس‌ها را در دمای پایین (۳۰ درجه) بشویید — نتیجه تمیزی تفاوت چندانی ندارد، اما مصرف انرژی تا ۴۰٪ کاهش می‌یابد.</li>
+                    <li>ظرف‌شویی را فقط زمانی روشن کنید که کاملاً پر باشد.</li>
+                </ul>
+            </div>
+        </div>
+        <!-- نکته ۶ -->
+        <div class="tip">
+            <img src="https://kalarex.com/wp-content/uploads/2024/07/%D8%AA%D9%81%D8%A7%D9%88%D8%AA-%D9%85%D8%B5%D8%B1%D9%81-%D8%A7%D9%86%D8%B1%DA%98%DB%8C-a-%D9%88-a-%D8%AF%D8%B1-%D9%84%D9%88%D8%A7%D8%B2%D9%85-%D8%AE%D8%A7%D9%86%DA%AF%DB%8C.webp" alt="برچسب انرژی A+++">
+            <div class="tip-header">
+                <span class="tip-number">۶</span> از لوازم خانگی با برچسب انرژی A یا A+ استفاده کنید
+            </div>
+            <div class="tip-content">
+                <p>هنگام خرید لوازم جدید (مانند یخچال، ماشین‌لباس‌شویی، تلویزیون)، حتماً به برچسب انرژی نگاه کنید. تفاوت مصرف بین کلاس G (ضعیف) و A+++ (عالی) می‌تواند سالانه چندین صد هزار تومان در قبض برق شما صرفه‌جویی کند!</p>
+            </div>
+        </div>
+        <!-- نکته ۷ -->
+        <div class="tip">
+            <img src="https://www.sakhtemoon.com/filemanager/contents/howto/%D8%B1%D9%88%D8%B4%20%D9%87%D8%A7%DB%8C%20%D8%B3%D8%A7%D8%AF%D9%87%20%D9%88%20%DA%A9%D8%A7%D8%B1%D8%A8%D8%B1%D8%AF%DB%8C%20%D8%A8%D8%B1%D8%A7%DB%8C%20%D8%B9%D8%A7%DB%8C%D9%82%20%DA%A9%D8%B1%D8%AF%D9%86%20%D8%AF%D8%B1%D8%A8%20%D9%88%20%D9%BE%D9%86%D8%AC%D8%B1%D9%87%20%D9%87%D8%A7.jpg" alt="درزگیری پنجره">
+            <div class="tip-header">
+                <span class="tip-number">۷</span> عایق‌کاری و نگهداری از پنجره‌ها
+            </div>
+            <div class="tip-content">
+                <p>پنجره‌های قدیمی و درزدار باعث ورود گرمای تابستان و خروج گرمای زمستان می‌شوند — در نتیجه سیستم‌های سرمایشی و گرمایشی بیشتر کار می‌کنند.</p>
+                <p><strong>راه‌حل‌های ارزان:</strong></p>
+                <ul>
+                    <li>چسب‌های آب‌بندی درز (Weather Stripping)</li>
+                    <li>پرده‌های عایق یا دو لایه</li>
+                    <li>استفاده از فیلم‌های عایق روی شیشه‌ها</li>
+                </ul>
+            </div>
+        </div>
+        <!-- نکته ۸ -->
+        <div class="tip">
+            <img src="https://api2.zoomit.ir/media/air-coolers-vs-air-conditioners-64859458c83153faa0cc1999?w=1920&q=80" alt="کولر آبی روی پشت بام">
+            <div class="tip-header">
+                <span class="tip-number">۸</span> از کولرهای آبی به‌جای کولر گازی در هوای خشک استفاده کنید
+            </div>
+            <div class="tip-content">
+                <p>در شهرهایی با رطوبت پایین (مثل اصفهان، کرمان، یزد)، کولر آبی مصرف برق بسیار کمتری دارد (حدود ۱/۱۰ کولر گازی!). فقط به یاد داشته باشید آب مخزن را به‌موقع تکمیل کنید و پد آن را تمیز نگه دارید.</p>
+            </div>
+        </div>
+        <!-- نکته ۹ -->
+        <div class="tip">
+            <img src="https://fritz.ir/wp-content/uploads/2022/05/Smart-Home-Energy-Saving-cover.jpg" alt="کولر آبی روی پشت بام">
+            <div class="tip-header">
+                <span class="tip-number">۹</span> برنامه‌ریزی هوشمند برای مصرف
+            </div>
+            <div class="tip-content">
+                <ul>
+                    <li>برق‌های پر مصرف (مثل اتو، جارو برقی، فر) را در ساعات غیر اوج (معمولاً قبل از ۴ عصر یا بعد از ۹ شب) استفاده کنید.</li>
+                    <li>در مناطقی که تعرفه‌های دوگانه (ساعت اوج و غیر اوج) دارند، این روش تأثیر چشمگیری دارد.</li>
+                </ul>
+            </div>
+        </div>
+        <!-- نکته ۱۰ -->
+        <div class="tip">
+            <img src="https://ana.ir/c-files/old/1398/12/16/637190950233619467.jpg" alt="خانواده و کودکان در صرفه جویی">
+            <div class="tip-header">
+                <span class="tip-number">۱۰</span> کودکان و خانواده را در صرفه‌جویی شریک کنید!
+            </div>
+            <div class="tip-content">
+                <p>صرفه‌جویی در برق یک فرهنگ خانوادگی است. با بازی، جدول پیشرفت و پاداش، کودکان را تشویق کنید تا:</p>
+                <ul>
+                    <li>لامپ‌های اتاق خالی را خاموش کنند</li>
+                    <li>گوشی را وقتی شارژ شد، از پریز بکشند</li>
+                    <li>پنجره‌ها را موقع روشن کردن کولر ببندند</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="conclusion">
+        <h2>🌱 نتیجه‌گیری:</h2>
+        <p>مصرف بهینه برق = هوشمندی + عادت‌های کوچک + انتخاب‌های درست</p>
+        <p>شما نیازی به صرف هزینه‌های زیاد یا تغییر کامل شیوه زندگی ندارید. فقط با آگاهی و دقت، می‌توانید هر ماه ۲۰ تا ۴۰٪ در مصرف برق خود صرفه‌جویی کنید — و این یعنی هزینه کمتر، زندگی راحت‌تر و کمک به سیاره زمین!</p>
+        <p><strong>✨ پیشنهاد ما:</strong> همین امروز یکی از این ۱۰ راه را در خانه‌تان امتحان کنید — فردا نتیجه آن را در قبض برق بعدی خواهید دید!</p>
+    </div>
+</div>
+<footer>
+    © ۲۰۲۵ EnergyWise - همه حقوق محفوظ است
+</footer>
+<!-- کنترل موزیک -->
+<div class="music-control">
+    <i class="fas fa-music"></i> موزیک آرام انرژی
+    <button onclick="toggleMusic()"><i id="play-icon" class="fas fa-play"></i></button>
+</div>
+<audio id="bg-music" loop>
+    <source src="https://dl.sportmentalist.ir/music/relax/bikalam.mp3" type="audio/mpeg">
+</audio>
+<script>
+// ذرات برق و جرقه
+function createElectricParticle() {
+    const container = document.getElementById('electric-particles');
+    if (Math.random() < 0.6) {
+        const bolt = document.createElement('div');
+        bolt.classList.add('bolt-particle');
+        bolt.textContent = '⚡';
+        bolt.style.left = Math.random() * 100 + 'vw';
+        bolt.style.animationDuration = Math.random() * 12 + 8 + 's';
+        container.appendChild(bolt);
+        setTimeout(() => bolt.remove(), 20000);
+    }
+    if (Math.random() < 0.4) {
+        const spark = document.createElement('div');
+        spark.classList.add('spark-particle');
+        spark.style.left = Math.random() * 100 + 'vw';
+        spark.style.animationDuration = Math.random() * 18 + 12 + 's';
+        container.appendChild(spark);
+        setTimeout(() => spark.remove(), 30000);
+    }
+}
+setInterval(createElectricParticle, 500);
+// کنترل موزیک
+const audio = document.getElementById('bg-music');
+const playIcon = document.getElementById('play-icon');
+let isPlaying = false;
+function toggleMusic() {
+    if (isPlaying) {
+        audio.pause();
+        playIcon.classList.remove('fa-pause');
+        playIcon.classList.add('fa-play');
+        isPlaying = false;
+    } else {
+        audio.play();
+        playIcon.classList.remove('fa-play');
+        playIcon.classList.add('fa-pause');
+        isPlaying = true;
+    }
+}
+document.body.addEventListener('click', () => {
+    if (!isPlaying) {
+        toggleMusic();
+    }
+}, { once: true });
+</script>
+</body>
+</html>

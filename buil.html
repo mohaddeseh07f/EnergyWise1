@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ساخت‌وساز سبز: خانه‌ای که به زمین هدیه می‌دهد | EnergyWise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #33691e;
+            --secondary: #689f38;
+            --accent: #ffca28;
+            --light: #e8f5e9;
+            --dark: #1b5e20;
+            --glow: rgba(255,202,40,0.5);
+            --leaf: #8bc34a;
+            --tree: #4caf50;
+        }
+        body {
+            margin: 0;
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #1b5e20, #33691e, #689f38);
+            background-attachment: fixed;
+            color: var(--white);
+            line-height: 1.9;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* ذرات برگ، درخت و طبیعت در پس‌زمینه (بیشتر و متحرک‌تر) */
+        .greenbuild-particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .leaf-particle {
+            position: absolute;
+            font-size: 40px;
+            color: var(--leaf);
+            opacity: 0.7;
+            animation: leafFall 18s infinite linear;
+            text-shadow: 0 0 20px var(--glow);
+        }
+        .tree-particle {
+            position: absolute;
+            font-size: 50px;
+            color: var(--tree);
+            opacity: 0.6;
+            animation: treeFloat 28s infinite linear;
+        }
+        .eco-particle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, var(--accent), transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 45px var(--accent);
+            animation: ecoRise 20s infinite linear;
+            opacity: 0.7;
+        }
+        @keyframes leafFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes treeFloat {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) translateX(150px); opacity: 0; }
+        }
+        @keyframes ecoRise {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) translateX(120px); opacity: 0; }
+        }
+        /* دکمه بازگشت */
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 32px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.4s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .home-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(104,159,56,0.6);
+        }
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+            color: white;
+            text-align: center;
+            padding: 120px 20px 90px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        header h1 {
+            font-size: 3.8em;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.7);
+        }
+        header p {
+            font-size: 1.6em;
+            max-width: 1000px;
+            margin: 30px auto 0;
+            opacity: 0.95;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 20px;
+            z-index: 1;
+        }
+        .intro {
+            background: rgba(255,255,255,0.15);
+            padding: 50px;
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            margin-bottom: 70px;
+            text-align: center;
+            font-size: 1.3em;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 800;
+            margin: 80px 0 50px;
+            color: var(--white);
+            text-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            width: 160px;
+            height: 8px;
+            background: var(--accent);
+            display: block;
+            margin: 20px auto 0;
+            border-radius: 4px;
+            box-shadow: 0 0 20px var(--glow);
+        }
+        .principles {
+            display: grid;
+            gap: 40px;
+            margin: 60px 0;
+        }
+        .principle {
+            background: rgba(255,255,255,0.15);
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 40px;
+            text-align: center;
+        }
+        .principle:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(104,159,56,0.5);
+        }
+        .principle-icon {
+            font-size: 6em;
+            color: var(--accent);
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px var(--glow);
+            animation: iconPulse 4s infinite alternate;
+        }
+        @keyframes iconPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+        .principle-header {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: var(--accent);
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .principle-content {
+            font-size: 1.3em;
+            color: var(--light);
+        }
+        .principle-content ul {
+            padding-right: 40px;
+            text-align: right;
+        }
+        .principle-content ul li {
+            margin-bottom: 20px;
+            position: relative;
+            padding-right: 35px;
+        }
+        .principle-content ul li::before {
+            content: "✅";
+            position: absolute;
+            right: -10px;
+            font-size: 1.5em;
+        }
+        .benefits-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 60px 0;
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        .benefits-table th, .benefits-table td {
+            padding: 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+        .benefits-table th {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            font-size: 1.4em;
+            color: var(--white);
+        }
+        .benefits-table td {
+            font-size: 1.2em;
+            color: var(--light);
+        }
+        .iran-section {
+            background: rgba(255,255,255,0.15);
+            padding: 60px;
+            border-radius: 35px;
+            margin: 80px 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .iran-section h2 {
+            color: var(--white);
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 50px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.6);
+        }
+        .conclusion {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            color: white;
+            padding: 90px 60px;
+            border-radius: 40px;
+            text-align: center;
+            margin: 100px 0;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+            font-size: 1.4em;
+        }
+        .conclusion h2 {
+            font-size: 3.2em;
+            margin-bottom: 40px;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+        footer {
+            text-align: center;
+            padding: 50px;
+            background: var(--dark);
+            color: white;
+            font-size: 1.2em;
+        }
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1.1em;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .music-control button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.8em; }
+            .section-title { font-size: 2.4em; }
+            .principle-icon { font-size: 4.5em; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ذرات برگ، درخت و طبیعت (بیشتر و جذاب‌تر) -->
+<div class="greenbuild-particles" id="greenbuild-particles"></div>
+
+<!-- دکمه بازگشت -->
+<a href="index.html" class="home-btn">
+    <i class="fas fa-home"></i> بازگشت به خانه
+</a>
+
+<header>
+    <h1>🏗️ ساخت‌وساز سبز: وقتی خانه‌ای که می‌سازید، به زمین قَرض نمی‌دهد — بلکه به آن هدیه می‌دهد!</h1>
+    <p>در دنیای امروز، ساختمان‌ها مسئول ۴۰٪ از مصرف انرژی جهانی و ۳۰٪ از انتشار گازهای گلخانه‌ای هستند. اما خبر خوب این است: با ساخت‌وساز سبز، می‌توانیم این روند را معکوس کنیم.</p>
+	<p>منبع : سایت  نشریه عمران و پروژه  <a href="https://www.cpjournals.com/article_220693.html">ورود به سایت</a> نکته متن موجود در این صفحه خلاصه و نتیجه صفحه اصلی است</p>
+</header>
+
+<div class="container">
+    <div class="intro">
+        <p>ساخت‌وساز سبز یعنی طراحی، ساخت و بهره‌برداری از ساختمان‌هایی که:</p>
+        <p>منابع طبیعی (آب، انرژی، مواد) را ذخیره می‌کنند،<br>
+        سلامت ساکنان را ارتقا می‌دهند،<br>
+        در طول عمرشان، به محیط‌زیست آسیبی نمی‌زنند — بلکه به آن کمک می‌کنند.</p>
+    </div>
+
+    <h2 class="section-title">🌿 ۶ اصل طلایی ساخت‌وساز سبز</h2>
+
+    <div class="principles">
+        <div class="principle">
+            <div class="principle-icon">🌍</div>
+            <div class="principle-header">۱. مکان‌یابی هوشمند</div>
+            <div class="principle-content">
+                <ul>
+                    <li>از ساخت در زمین‌های حاصلخیز یا مناطق حفاظت‌شده خودداری کنید.</li>
+                    <li>ساختمان را طوری جهت‌دهی کنید که حداکثر نور روز و باد طبیعی را دریافت کند (در ایران: پنجره‌های جنوبی برای جذب نور زمستانه!).</li>
+                    <li>نزدیکی به حمل‌ونقل عمومی، دوچرخه‌راه‌ها و خدمات شهری = کاهش وابستگی به خودرو.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="principle-icon">🧱</div>
+            <div class="principle-header">۲. مصالح سبز و محلی</div>
+            <div class="principle-content">
+                <ul>
+                    <li>استفاده از مصالح بازیافتی (مثل آجر بازیافتی، بتن با خاکستر بادی).</li>
+                    <li>استفاده از مصالح طبیعی (چوب گواهی‌شده، خشت، سنگ محلی).</li>
+                    <li>خرید از تولیدکنندگان محلی = کاهش انتشار کربن حمل‌ونقل + حمایت از اقتصاد منطقه.</li>
+                </ul>
+                <p>✅ در ایران: خشت سنتی، آجر پرکاه، و حتی بلوک‌های هوشمند عایق‌دار گزینه‌های عالی سبز هستند.</p>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="principle-icon">🛡️</div>
+            <div class="principle-header">۳. عایق‌کاری هوشمند و پوسته پویا</div>
+            <div class="principle-content">
+                <ul>
+                    <li>دیوارها، سقف و کف را با عایق‌های با کیفیت پوشانید.</li>
+                    <li>استفاده از پنجره‌های دوجداره با گاز آرگون.</li>
+                    <li>طراحی سایه‌بان‌های هوشمند یا گیاهان دیواری.</li>
+                </ul>
+                <p>نتیجه؟ — ۴۰ تا ۶۰٪ کاهش مصرف گرمایش و سرمایش!</p>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="principle-icon">☀️</div>
+            <div class="principle-header">۴. سیستم‌های انرژی پاک درون‌ساختمانی</div>
+            <div class="principle-content">
+                <ul>
+                    <li>نصب پنل‌های خورشیدی روی سقف برای تولید برق.</li>
+                    <li>استفاده از سیستم‌های گرمایش آب خورشیدی.</li>
+                    <li>به‌کارگیری پمپ‌های حرارتی به‌جای بویلرهای گازی.</li>
+                </ul>
+                <p>💡 نکته: در ایران با تابش خورشیدی بالا، هر ۱۰ مترمربع پنل خورشیدی می‌تواند سالانه ۱۵۰۰ تا ۲۰۰۰ کیلووات‌ساعت برق تولید کند!</p>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="principle-icon">💧</div>
+            <div class="principle-header">۵. مدیریت هوشمند آب</div>
+            <div class="principle-content">
+                <ul>
+                    <li>نصب توالت‌های دوگانه و شیرآلات کم‌مصرف.</li>
+                    <li>استفاده از سیستم جمع‌آوری آب باران.</li>
+                    <li>تصفیه فاضلاب خاکستری برای استفاده مجدد.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="principle">
+            <div class="principle-icon">🪴</div>
+            <div class="principle-header">۶. کیفیت هوای داخلی و سلامت ساکنان</div>
+            <div class="principle-content">
+                <ul>
+                    <li>استفاده از رنگ‌ها و چسب‌های بدون VOC.</li>
+                    <li>طراحی تهویه طبیعی.</li>
+                    <li>کاشت گیاهان داخلی برای خالص‌سازی هوا.</li>
+                </ul>
+                <p>🌱 خانه سبز = هوای پاک‌تر + استرس کمتر + تمرکز بیشتر!</p>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">🏆 مزایای ساخت‌وساز سبز</h2>
+    <table class="benefits-table">
+        <tr>
+            <th>حوزه</th>
+            <th>مزایا</th>
+        </tr>
+        <tr>
+            <td>اقتصادی</td>
+            <td>کاهش ۳۰ تا ۷۰٪ هزینه‌های انرژی و آب<br>افزایش ارزش ملک (تا ۱۰–۱۵٪)<br>بازگشت سرمایه در ۵ تا ۱۰ سال</td>
+        </tr>
+        <tr>
+            <td>محیط‌زیستی</td>
+            <td>کاهش ردپای کربن<br>کاهش هدررفت منابع<br>حفظ تنوع زیستی</td>
+        </tr>
+        <tr>
+            <td>اجتماعی</td>
+            <td>سلامت بهتر ساکنان<br>رفاه روانی بیشتر<br>الهام‌بخشی به جامعه</td>
+        </tr>
+    </table>
+
+    <div class="iran-section">
+        <h2>🇮🇷 ساخت‌وساز سبز در ایران: از سنت تا فناوری</h2>
+        <p>ایرانیان هزاران سال است که از اصول سبز استفاده می‌کنند:</p>
+        <ul style="text-align:center;list-style:none;color:var(--light);font-size:1.3em;">
+            <li>بادگیرهای یزد = سیستم تهویه طبیعی سنتی</li>
+            <li>حوض‌خانه‌ها = خنک‌کننده هوای داخلی</li>
+            <li>دیوارهای ضخیم خشتی = عایق حرارتی طبیعی</li>
+        </ul>
+        <p>امروزه می‌توانیم این دانش سنتی را با فناوری‌های نوین ترکیب کنیم:</p>
+        <ul style="text-align:center;list-style:none;color:var(--light);font-size:1.3em;">
+            <li>استفاده از بلوک‌های عایق‌دار هوشمند</li>
+            <li>نصب پنل خورشیدی روی بام‌های مدرن</li>
+            <li>طراحی حیاط‌های سبز داخلی با سیستم آبیاری قطره‌ای</li>
+        </ul>
+        <p>📌 نکته مهم: با وجود عدم وجود استاندارد رسمی «ساختمان سبز» در ایران، هر مالک یا معمار می‌تواند با رعایت اصول فوق، ساختمانی پایدار بسازد.</p>
+    </div>
+
+    <div class="conclusion">
+        <h2>✨ قدم بعدی چیست؟</h2>
+        <p>اگر در حال ساخت خانه هستید: یک معمار آگاه از اصول سبز استخدام کنید.</p>
+        <p>اگر در آپارتمان زندگی می‌کنید: عایق‌کاری پنجره‌ها، نصب شیرآلات کم‌مصرف و کاشت گیاه را شروع کنید.</p>
+        <p>اگر دانشجو یا مهندس هستید: دوره‌های LEED یا GRIHA را بررسی کنید.</p>
+        <p>🌍 خانه‌ای که امروز می‌سازیم، فردا جایی است که فرزندانمان در آن نفس می‌کشند.<br>
+        بیایید آن را نه فقط «خانه»، بلکه «باغی برای آینده» بسازیم.</p>
+    </div>
+</div>
+
+<footer>
+    © ۲۰۲۵ EnergyWise - همه حقوق محفوظ است
+</footer>
+
+<!-- کنترل موزیک -->
+<div class="music-control">
+    <i class="fas fa-music"></i> موزیک آرام طبیعت
+    <button onclick="toggleMusic()"><i id="play-icon" class="fas fa-play"></i></button>
+</div>
+
+<audio id="bg-music" loop>
+    <source src="https://aod.musiciom.ir/Album/Sound%20Nature/Sound%20Nature%20(1).mp3?host=musictag.ir" type="audio/mpeg">
+</audio>
+
+<script>
+// ذرات برگ، درخت و طبیعت (بیشتر و جذاب‌تر)
+function createGreenBuildParticle() {
+    const container = document.getElementById('greenbuild-particles');
+
+    if (Math.random() < 0.7) {
+        const leaf = document.createElement('div');
+        leaf.classList.add('leaf-particle');
+        leaf.textContent = '🍃';
+        leaf.style.left = Math.random() * 100 + 'vw';
+        leaf.style.animationDuration = Math.random() * 16 + 10 + 's';
+        container.appendChild(leaf);
+        setTimeout(() => leaf.remove(), 26000);
+    }
+
+    if (Math.random() < 0.5) {
+        const tree = document.createElement('div');
+        tree.classList.add('tree-particle');
+        tree.textContent = '🌳';
+        tree.style.left = Math.random() * 100 + 'vw';
+        tree.style.animationDuration = Math.random() * 24 + 16 + 's';
+        container.appendChild(tree);
+        setTimeout(() => tree.remove(), 40000);
+    }
+
+    if (Math.random() < 0.4) {
+        const eco = document.createElement('div');
+        eco.classList.add('eco-particle');
+        eco.style.left = Math.random() * 100 + 'vw';
+        eco.style.animationDuration = Math.random() * 18 + 12 + 's';
+        container.appendChild(eco);
+        setTimeout(() => eco.remove(), 30000);
+    }
+}
+setInterval(createGreenBuildParticle, 500);
+
+// کنترل موزیک
+const audio = document.getElementById('bg-music');
+const playIcon = document.getElementById('play-icon');
+let isPlaying = false;
+
+function toggleMusic() {
+    if (isPlaying) {
+        audio.pause();
+        playIcon.classList.remove('fa-pause');
+        playIcon.classList.add('fa-play');
+        isPlaying = false;
+    } else {
+        audio.play();
+        playIcon.classList.remove('fa-play');
+        playIcon.classList.add('fa-pause');
+        isPlaying = true;
+    }
+}
+
+document.body.addEventListener('click', () => {
+    if (!isPlaying) {
+        toggleMusic();
+    }
+}, { once: true });
+</script>
+
+</body>
+</html>

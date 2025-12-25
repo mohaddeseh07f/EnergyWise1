@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انیمیشن آموزشی صرفه‌جویی در مصرف انرژی | EnergyWise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1976d2;
+            --secondary: #42a5f5;
+            --accent: #ffd740;
+            --dark: #0d47a1;
+            --glow: rgba(255,215,64,0.5);
+        }
+        body {
+            margin: 0;
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #0d47a1, #1976d2, #42a5f5);
+            background-attachment: fixed;
+            color: var(--white);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        /* ذرات انرژی */
+        .particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .energy-particle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, var(--accent), transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 35px var(--accent);
+            animation: energyRise 22s infinite linear;
+            opacity: 0.7;
+        }
+        @keyframes energyRise {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+        }
+        /* دکمه بازگشت */
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 32px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.4s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .home-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(66,165,245,0.6);
+        }
+        .video-container {
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .source-info {
+            margin-top: 30px;
+            font-size: 1.4em;
+            color: var(--light);
+            text-align: center;
+        }
+        .source-info a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .source-info a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .video-container { margin: 60px auto; }
+            .video-wrapper { border-radius: 30px; }
+            .source-info { font-size: 1.2em; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ذرات انرژی -->
+<div class="particles" id="particles"></div>
+
+<!-- دکمه بازگشت -->
+<a href="index.html" class="home-btn">
+    <i class="fas fa-home"></i> بازگشت به خانه
+</a>
+
+<div class="video-container">
+    <div class="video-wrapper">
+        <video controls autoplay loop muted poster="https://via.placeholder.com/1200x675/0d47a1/ffffff?text=انیمیشن+صرفه‌جویی+در+انرژی">
+            <source src="V.mp4" type="video/mp4">
+            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+        </video>
+    </div>
+
+    <p class="source-info">
+        منبع : YouTube <a href="https://youtu.be/grx-6CNNV_Q?feature=shared">ورود به سایت</a>
+    </p>
+</div>
+
+<script>
+// ذرات انرژی
+function createParticle() {
+    const container = document.getElementById('particles');
+    const p = document.createElement('div');
+    p.classList.add('energy-particle');
+    const size = Math.random() * 12 + 8;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = Math.random() * 18 + 12 + 's';
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 30000);
+}
+setInterval(createParticle, 500);
+</script>
+
+</body>
+</html>

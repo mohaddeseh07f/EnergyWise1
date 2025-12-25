@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوازم خانگی هوشمند: خانه‌ای که فکر می‌کند | EnergyWise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4527a0;
+            --secondary: #7c4dff;
+            --accent: #ffd740;
+            --light: #ede7f6;
+            --dark: #311b92;
+            --glow: rgba(255,215,64,0.5);
+            --chip: #ab47bc;
+        }
+        body {
+            margin: 0;
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #311b92, #4527a0, #7c4dff);
+            background-attachment: fixed;
+            color: var(--white);
+            line-height: 1.9;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* ذرات مدار و چیپ هوشمند در پس‌زمینه */
+        .smart-particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .chip-particle {
+            position: absolute;
+            font-size: 35px;
+            color: var(--chip);
+            opacity: 0.7;
+            animation: chipFloat 20s infinite linear;
+            text-shadow: 0 0 20px var(--glow);
+        }
+        .circuit-particle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, var(--accent), transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 40px var(--accent);
+            animation: circuitRise 22s infinite linear;
+            opacity: 0.6;
+        }
+        @keyframes chipFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+        @keyframes circuitRise {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) translateX(120px); opacity: 0; }
+        }
+        /* دکمه بازگشت */
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 32px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.4s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .home-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(124,77,255,0.6);
+        }
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+            color: white;
+            text-align: center;
+            padding: 120px 20px 90px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        header h1 {
+            font-size: 3.8em;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.7);
+        }
+        header p {
+            font-size: 1.6em;
+            max-width: 1000px;
+            margin: 30px auto 0;
+            opacity: 0.95;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 20px;
+            z-index: 1;
+        }
+        .intro {
+            background: rgba(255,255,255,0.15);
+            padding: 50px;
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            margin-bottom: 70px;
+            text-align: center;
+            font-size: 1.3em;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 800;
+            margin: 80px 0 50px;
+            color: var(--white);
+            text-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            width: 160px;
+            height: 8px;
+            background: var(--accent);
+            display: block;
+            margin: 20px auto 0;
+            border-radius: 4px;
+            box-shadow: 0 0 20px var(--glow);
+        }
+        .devices {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+        }
+        .device-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .device-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(124,77,255,0.5);
+        }
+        .device-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 5px solid var(--accent);
+            transition: transform 0.5s;
+        }
+        .device-card:hover img {
+            transform: scale(1.1);
+        }
+        .device-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .device-number {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--dark);
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            border-radius: 50%;
+            font-size: 1.8em;
+            margin-left: 20px;
+            box-shadow: 0 0 20px var(--glow);
+        }
+        .device-content {
+            padding: 40px;
+            font-size: 1.2em;
+            color: var(--light);
+        }
+        .device-content ul {
+            padding-right: 40px;
+            text-align: right;
+        }
+        .device-content ul li {
+            margin-bottom: 22px;
+            position: relative;
+            padding-right: 35px;
+        }
+        .device-content ul li::before {
+            content: "✅";
+            position: absolute;
+            right: -10px;
+            font-size: 1.5em;
+        }
+        .iran-note {
+            background: rgba(255,255,255,0.15);
+            padding: 60px;
+            border-radius: 35px;
+            margin: 80px 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            text-align: center;
+            font-size: 1.3em;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .iran-note h2 {
+            color: var(--white);
+            font-size: 2.8em;
+            margin-bottom: 40px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.6);
+        }
+        .conclusion {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            color: white;
+            padding: 90px 60px;
+            border-radius: 40px;
+            text-align: center;
+            margin: 100px 0;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+            font-size: 1.4em;
+        }
+        .conclusion h2 {
+            font-size: 3.2em;
+            margin-bottom: 40px;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+        footer {
+            text-align: center;
+            padding: 50px;
+            background: var(--dark);
+            color: white;
+            font-size: 1.2em;
+        }
+        /* کنترل موزیک */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1.1em;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .music-control button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.8em; }
+            .section-title { font-size: 2.4em; }
+            .device-card img { height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ذرات مدار و چیپ هوشمند -->
+<div class="smart-particles" id="smart-particles"></div>
+
+<!-- دکمه بازگشت -->
+<a href="index.html" class="home-btn">
+    <i class="fas fa-home"></i> بازگشت به خانه
+</a>
+
+<header>
+    <h1>🏠 لوازم خانگی هوشمند: وقتی خانه‌تان «فکر» می‌کند تا شما کمتر پرداخت کنید!</h1>
+    <p>هوشمند بودن واقعی یعنی خانه‌تان بتواند انرژی، آب و زمان شما را ذخیره کند — حتی وقتی شما خانه نیستید.</p>
+	<p>منبع : سایت دیجی کالا <a href="https://www.digikala.com/mag/10-smart-home-appliances-to-make-life-easier/">ورود به سایت</a> نکته متن موجود در این صفحه خلاصه و نتیجه صفحه اصلی است</p>
+	
+</header>
+
+<div class="container">
+    <div class="intro">
+        <p>لوازم خانگی هوشمند امروزی، با استفاده از حسگرها، هوش مصنوعی و اتصال به اینترنت (IoT)، مصرف انرژی را بهینه می‌کنند، هزینه‌ها را کاهش می‌دهند و کیفیت زندگی را افزایش می‌دهند.</p>
+        <p>در اینجا ۸ لوازم هوشمند کلیدی که هر خانه‌ای برای صرفه‌جویی نیاز دارد، معرفی می‌شوند:</p>
+    </div>
+
+    <h2 class="section-title">۸ لوازم هوشمند کلیدی</h2>
+
+    <div class="devices">
+        <div class="device-card">
+            <img src="https://acogroup.ir/wp-content/uploads/2021/05/%D8%AA%D8%B1%D9%85%D9%88%D8%B3%D8%AA%D8%A7%D8%AA-%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF.jpg" alt="ترموستات هوشمند">
+            <div class="device-header">
+                <span class="device-number">۱</span> ترموستات هوشمند (Smart Thermostat)
+            </div>
+            <div class="device-content">
+                <p><strong>🌡️ مدیر هوشمند گرمایش و سرمایش خانه</strong></p>
+                <ul>
+                    <li>دمای خانه را بر اساس حضور یا غیاب شما تنظیم می‌کند.</li>
+                    <li>با یادگیری عادت‌های شما، برنامه‌ریزی بهینه‌تری ایجاد می‌کند.</li>
+                    <li>از طریق موبایل، دمای خانه را قبل از رسیدن تنظیم کنید.</li>
+                    <li>تا ۲۰–۳۰٪ در مصرف گاز و برق سیستم‌های گرمایشی/سرمایشی صرفه‌جویی ایجاد می‌کند.</li>
+                </ul>
+                <p><strong>✅ برای ایران:</strong> گزینه‌های سازگار با دیگ‌های گازی و کولرهای اسپلیت (مثل EcoBee, Tado, یا برندهای ایرانی هوشمند).</p>
+            </div>
+        </div>
+
+        <div class="device-card">
+            <img src="https://onyx-bms.ir/wp-content/uploads/2021/08/HC-Pro-WSP2.jpg" alt="پریز هوشمند">
+            <div class="device-header">
+                <span class="device-number">۲</span> پریزهای هوشمند (Smart Plugs)
+            </div>
+            <div class="device-content">
+                <p><strong>🔌 تبدیل هر دستگاه عادی به هوشمند!</strong></p>
+                <ul>
+                    <li>از راه دور خاموش/روشن شود.</li>
+                    <li>در ساعات اوج مصرف خودکار قطع شود.</li>
+                    <li>مصرف برق لحظه‌ای نمایش داده شود.</li>
+                    <li>از مصرف پنهان (Standby) جلوگیری می‌کند.</li>
+                </ul>
+                <p><strong>💡 هزینه:</strong> حدود ۳۰۰ تا ۸۰۰ هزار تومان — بازگشت سرمایه سریع.</p>
+            </div>
+        </div>
+
+        <div class="device-card">
+            <img src="https://machimob.com/wp-content/uploads/figermoon-ambient-smart-flow-light-bar-01-1691496175.webp" alt="چراغ هوشمند">
+            <div class="device-header">
+                <span class="device-number">۳</span> چراغ‌های هوشمند (Smart Lighting)
+            </div>
+            <div class="device-content">
+                <p><strong>💡 نوری که تنها وقتی نیاز است، روشن می‌شود</strong></p>
+                <ul>
+                    <li>روشن/خاموش شدن با زمان‌سنج، حسگر حرکت یا صدا.</li>
+                    <li>تنظیم رنگ و شدت نور بر اساس ساعت روز.</li>
+                    <li>خاموش‌شدن خودکار در اتاق‌های خالی.</li>
+                    <li>مصرف تا ۸۵٪ کمتر از لامپ‌های قدیمی.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="device-card">
+            <img src="https://hooshmandbms.ir/wp-content/uploads/2024/03/smart-washing-machine3.jpg" alt="ماشین لباسشویی هوشمند">
+            <div class="device-header">
+                <span class="device-number">۴</span> ماشین‌لباس‌شویی و ظرف‌شویی هوشمند
+            </div>
+            <div class="device-content">
+                <p><strong>🧺 شست‌وشویی که زمان و انرژی ذخیره می‌کند</strong></p>
+                <ul>
+                    <li>راه‌اندازی از راه دور.</li>
+                    <li>انتخاب برنامه‌های کم‌مصرف.</li>
+                    <li>ارسال اعلان هنگام پایان کار.</li>
+                    <li>هماهنگی با پنل خورشیدی برای کار در ساعات تولید برق.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="device-card">
+            <img src="https://storage-asiatech-s3.damatajhiz.com/ultimate-cms-final/img/cms/air%20conditioner/%D8%A7%D8%B3%D9%BE%D9%84%DB%8C%D8%AA%20%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF.jpg" alt="کولر گازی هوشمند">
+            <div class="device-header">
+                <span class="device-number">۵</span> کولرهای گازی و اسپلیت هوشمند
+            </div>
+            <div class="device-content">
+                <p><strong>❄️ سرما و گرمایی که فقط وقتی نیاز است</strong></p>
+                <ul>
+                    <li>کنترل از راه دور با اپلیکیشن.</li>
+                    <li>حسگر حضور برای تنظیم خودکار.</li>
+                    <li>هماهنگی با پرده‌های هوشمند.</li>
+                    <li>گزارش ماهانه مصرف انرژی.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="device-card">
+            <img src="https://azartitr.ir/Portals/0/Library/Image/2024/3/638468768193834882.jpg" alt="مدیریت آب هوشمند">
+            <div class="device-header">
+                <span class="device-number">۶</span> سیستم‌های جمع‌آوری و مدیریت آب هوشمند
+            </div>
+            <div class="device-content">
+                <p><strong>💧 هر قطره آب را زیر نظر دارد</strong></p>
+                <ul>
+                    <li>شیرآلات هوشمند با تنظیم جریان.</li>
+                    <li>حسگرهای نشتی آب با قطع خودکار.</li>
+                    <li>آبیاری هوشمند باغ بر اساس هواشناسی.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="device-card">
+            <img src="https://tarrahia.com/wp-content/uploads/2022/01/%D9%BE%D8%B1%D8%AF%D9%87-%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF.jpg" alt="پرده هوشمند">
+            <div class="device-header">
+                <span class="device-number">۷</span> پنجره‌ها و پرده‌های هوشمند
+            </div>
+            <div class="device-content">
+                <p><strong>🪟 نور و گرما را مدیریت می‌کند</strong></p>
+                <ul>
+                    <li>باز و بسته شدن خودکار بر اساس ساعت.</li>
+                    <li>کاهش نور مستقیم تابستانه.</li>
+                    <li>گرمایش طبیعی در زمستان.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="device-card">
+            <img src="https://yuccahq.com/wp-content/uploads/2019/09/smart-home-hub-roles.jpg" alt="هاب خانه هوشمند">
+            <div class="device-header">
+                <span class="device-number">۸</span> سیستم مرکزی خانه هوشمند (Hub)
+            </div>
+            <div class="device-content">
+                <p><strong>📱 فرماندهی کل خانه در کف دست شما</strong></p>
+                <ul>
+                    <li>ادغام تمام دستگاه‌ها در یک اپلیکیشن.</li>
+                    <li>سناریوهای هوشمند: «شب خواب»، «مرخصی» و ...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="iran-note">
+        <h2>💰 آیا لوازم هوشمند در ایران مقرون‌به‌صرفه هستند؟</h2>
+        <p><strong>بله — اگر هوشمندانه انتخاب شوند:</strong></p>
+        <ul style="display:inline-block;text-align:right;color:var(--light);">
+            <li>پریز و چراغ هوشمند: هزینه پایین + بازگشت سریع سرمایه.</li>
+            <li>ترموستات هوشمند: در خانه‌هایی با مصرف بالا، بازگشت سرمایه در ۱–۲ سال.</li>
+            <li>پنل خورشیدی + لوازم هوشمند: ترکیبی ایده‌آل برای استقلال انرژی.</li>
+        </ul>
+        <p style="margin-top:20px;"><strong>نکته:</strong> نیازی نیست همه چیز را یک‌جا خریداری کنید. شروع از ۲–۳ دستگاه کلیدی کافی است.</p>
+    </div>
+
+    <div class="conclusion">
+        <h2>🌱 نتیجه‌گیری: خانه هوشمند = خانه پایدار</h2>
+        <p>لوازم خانگی هوشمند فقط برای «راحتی» نیستند — آن‌ها ابزاری برای مسئولیت‌پذیری انرژی هستند.</p>
+        <p>با هر دستگاه هوشمند، شما:</p>
+        <p>پول کمتری پرداخت می‌کنید،<br>
+        استرس کمتری از فراموشی خاموش کردن دستگاه‌ها دارید،<br>
+        و سهمی از آینده پاک‌تر می‌سازید.</p>
+        <p><strong>🏡 خانه‌ای که هوشمند است، نه فقط به شما خدمت می‌کند — بلکه به زمین هم احترام می‌گذارد.</strong></p>
+    </div>
+</div>
+
+<footer>
+    © ۲۰۲۵ EnergyWise - همه حقوق محفوظ است
+</footer>
+
+<!-- کنترل موزیک -->
+<div class="music-control">
+    <i class="fas fa-music"></i> موزیک آرام تکنولوژی
+    <button onclick="toggleMusic()"><i id="play-icon" class="fas fa-play"></i></button>
+</div>
+
+<audio id="bg-music" loop>
+    <source src="https://img.stockmusic.ir/04-01/24/16586/digital-future-16586-demo.mp3?_=1" type="audio/mpeg">
+</audio>
+
+<script>
+// ذرات مدار و چیپ
+function createSmartParticle() {
+    const container = document.getElementById('smart-particles');
+
+    if (Math.random() < 0.6) {
+        const chip = document.createElement('div');
+        chip.classList.add('chip-particle');
+        chip.textContent = '🧠';
+        chip.style.left = Math.random() * 100 + 'vw';
+        chip.style.animationDuration = Math.random() * 18 + 12 + 's';
+        container.appendChild(chip);
+        setTimeout(() => chip.remove(), 30000);
+    }
+
+    if (Math.random() < 0.4) {
+        const circuit = document.createElement('div');
+        circuit.classList.add('circuit-particle');
+        circuit.style.left = Math.random() * 100 + 'vw';
+        circuit.style.animationDuration = Math.random() * 20 + 15 + 's';
+        container.appendChild(circuit);
+        setTimeout(() => circuit.remove(), 35000);
+    }
+}
+setInterval(createSmartParticle, 600);
+
+// کنترل موزیک
+const audio = document.getElementById('bg-music');
+const playIcon = document.getElementById('play-icon');
+let isPlaying = false;
+
+function toggleMusic() {
+    if (isPlaying) {
+        audio.pause();
+        playIcon.classList.remove('fa-pause');
+        playIcon.classList.add('fa-play');
+        isPlaying = false;
+    } else {
+        audio.play();
+        playIcon.classList.remove('fa-play');
+        playIcon.classList.add('fa-pause');
+        isPlaying = true;
+    }
+}
+
+document.body.addEventListener('click', () => {
+    if (!isPlaying) {
+        toggleMusic();
+    }
+}, { once: true });
+</script>
+
+</body>
+</html>

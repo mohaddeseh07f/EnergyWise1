@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بازی دوز انرژی - EnergyWise</title>
+<style>
+    :root {
+        --primary: #00796b;
+        --secondary: #00acc1;
+        --light: #e0f2f1;
+        --glow: #00d4ff;
+        --win: #FFD700;
+    }
+    body {
+        margin: 0;
+        background: linear-gradient(135deg, #004d40, #00796b, #00acc1);
+        font-family: 'Tahoma', sans-serif;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .home-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 24px;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid var(--light);
+        border-radius: 30px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.4s;
+        z-index: 10;
+    }
+    .home-btn:hover {
+        background: var(--secondary);
+        transform: scale(1.1);
+    }
+    h1 {
+        font-size: 3.2em;
+        margin: 10px 0 15px;
+        text-shadow: 0 0 20px rgba(0,212,255,0.7);
+        text-align: center;
+    }
+    .subtitle {
+        font-size: 1.4em;
+        margin-bottom: 25px;
+        opacity: 0.9;
+        text-align: center;
+    }
+    .game-container {
+        background: rgba(255,255,255,0.15);
+        padding: 40px;
+        border-radius: 30px;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        text-align: center;
+        width: 100%;
+        max-width: 520px; /* کمی بزرگتر برای زیبایی */
+        margin: 0 auto; /* اطمینان از وسط بودن */
+    }
+    .mode-selection {
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    .mode-btn {
+        padding: 10px 20px;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid var(--light);
+        border-radius: 25px;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+    .mode-btn.active {
+        background: var(--secondary);
+        border-color: var(--glow);
+    }
+    #board {
+        display: grid;
+        grid-template-columns: repeat(3, 120px);
+        grid-template-rows: repeat(3, 120px);
+        gap: 15px;
+        margin: 30px auto; /* وسط بودن برد */
+        justify-content: center;
+    }
+    .cell {
+        background: rgba(255,255,255,0.25);
+        border-radius: 20px;
+        font-size: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.4s;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .cell:hover {
+        background: rgba(0,212,255,0.4);
+        transform: translateY(-8px);
+    }
+    .cell.winning {
+        background: var(--win) !important;
+        color: #000;
+        animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    #game-status {
+        font-size: 28px;
+        margin: 20px 0;
+        min-height: 60px;
+        font-weight: bold;
+    }
+    .controls {
+        margin: 25px 0;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    button {
+        padding: 15px 40px;
+        font-size: 20px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+    button:hover {
+        background: var(--secondary);
+        transform: scale(1.05);
+    }
+    .scoreboard {
+        margin-top: 30px;
+        padding: 20px;
+        background: rgba(0,0,0,0.3);
+        border-radius: 20px;
+        font-size: 1.4em;
+    }
+    .score {
+        margin: 12px 0;
+    }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="home-btn">🏠 بازگشت به خانه</a>
+
+<div class="game-container">
+    <h1>دوز انرژی</h1>
+    <p class="subtitle">☀️ پنل خورشیدی در مقابل 💡 لامپ کم‌مصرف</p>
+
+    <div class="mode-selection">
+        <button class="mode-btn active" data-mode="pvc">بازی با کامپیوتر</button>
+        <button class="mode-btn" data-mode="pvp">دو نفره</button>
+    </div>
+
+    <div id="game-status">شروع بازی! شما ☀️ هستید</div>
+    <div id="board"></div>
+
+    <div class="controls">
+        <button id="restart-btn">شروع مجدد بازی</button>
+        <button id="reset-score">ریست امتیازات</button>
+    </div>
+
+    <div class="scoreboard">
+        <div class="score">امتیاز شما (☀️): <span id="player-score">0</span></div>
+        <div class="score">امتیاز حریف (💡): <span id="computer-score">0</span></div>
+        <div class="score">مساوی: <span id="draw-score">0</span></div>
+    </div>
+</div>
+
+<!-- اسکریپت بازی همان قبلی است، فقط کپی می‌کنم -->
+<script>
+let currentPlayer = '☀️';
+let gameBoard = ['', '', '', '', '', '', '', '', ''];
+let gameActive = true;
+let mode = 'pvc';
+
+let scores = {
+    player: 0,
+    computer: 0,
+    draw: 0
+};
+
+const winningConditions = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+];
+
+const board = document.getElementById('board');
+const status = document.getElementById('game-status');
+const playerScoreEl = document.getElementById('player-score');
+const computerScoreEl = document.getElementById('computer-score');
+const drawScoreEl = document.getElementById('draw-score');
+
+function createBoard() {
+    board.innerHTML = '';
+    gameBoard.forEach((_, i) => {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.index = i;
+        cell.addEventListener('click', handleClick);
+        board.appendChild(cell);
+    });
+}
+
+function handleClick(e) {
+    const i = e.target.dataset.index;
+    if (gameBoard[i] || !gameActive) return;
+
+    makeMove(i, currentPlayer);
+    if (mode === 'pvc' && gameActive && currentPlayer === '💡') {
+        setTimeout(computerMove, 600);
+    }
+}
+
+function makeMove(index, player) {
+    gameBoard[index] = player;
+    document.querySelector(`[data-index="${index}"]`).textContent = player;
+    const result = checkWinner();
+    if (result) {
+        endGame(result);
+    } else {
+        currentPlayer = currentPlayer === '☀️' ? '💡' : '☀️';
+        status.textContent = mode === 'pvp' ? `نوبت: ${currentPlayer}` : (currentPlayer === '☀️' ? 'نوبت شما ☀️' : 'کامپیوتر در حال فکر...');
+    }
+}
+
+function computerMove() {
+    let move = bestMove();
+    if (move === -1) move = gameBoard.findIndex(cell => cell === '');
+    if (move !== -1) makeMove(move, '💡');
+}
+
+function bestMove() {
+    for (let i = 0; i < 9; i++) {
+        if (gameBoard[i] === '') {
+            gameBoard[i] = '💡';
+            if (checkWinner()) { gameBoard[i] = ''; return i; }
+            gameBoard[i] = '';
+        }
+    }
+    for (let i = 0; i < 9; i++) {
+        if (gameBoard[i] === '') {
+            gameBoard[i] = '☀️';
+            if (checkWinner()) { gameBoard[i] = ''; return i; }
+            gameBoard[i] = '';
+        }
+    }
+    const center = 4;
+    if (gameBoard[center] === '') return center;
+    const corners = [0,2,6,8];
+    for (let corner of corners) if (gameBoard[corner] === '') return corner;
+    return -1;
+}
+
+function checkWinner() {
+    for (let condition of winningConditions) {
+        const [a, b, c] = condition;
+        if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+            highlightWinningCells(condition);
+            return gameBoard[a];
+        }
+    }
+    if (!gameBoard.includes('')) return 'draw';
+    return null;
+}
+
+function highlightWinningCells(condition) {
+    condition.forEach(i => {
+        document.querySelector(`[data-index="${i}"]`).classList.add('winning');
+    });
+}
+
+function endGame(result) {
+    gameActive = false;
+    if (result === '☀️') {
+        status.innerHTML = '🎉 شما برنده شدید! 🎉';
+        scores.player++;
+        playerScoreEl.textContent = scores.player;
+    } else if (result === '💡') {
+        status.innerHTML = '💡 حریف برنده شد!';
+        scores.computer++;
+        computerScoreEl.textContent = scores.computer;
+    } else {
+        status.innerHTML = 'مساوی! 🤝';
+        scores.draw++;
+        drawScoreEl.textContent = scores.draw;
+    }
+}
+
+function restartGame() {
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    currentPlayer = '☀️';
+    gameActive = true;
+    status.textContent = mode === 'pvp' ? 'شروع بازی! نوبت ☀️' : 'شروع بازی! نوبت شما ☀️';
+    createBoard();
+}
+
+document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        mode = btn.dataset.mode;
+        restartGame();
+    });
+});
+
+document.getElementById('restart-btn').addEventListener('click', restartGame);
+document.getElementById('reset-score').addEventListener('click', () => {
+    scores = { player: 0, computer: 0, draw: 0 };
+    playerScoreEl.textContent = computerScoreEl.textContent = drawScoreEl.textContent = '0';
+    restartGame();
+});
+
+createBoard();
+</script>
+
+</body>
+</html>

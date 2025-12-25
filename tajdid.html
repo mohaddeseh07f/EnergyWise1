@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انرژی‌های تجدیدپذیر: آینده انرژی پاک | EnergyWise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #4caf50;
+            --accent: #ffd740;
+            --light: #e8f5e9;
+            --dark: #1b5e20;
+            --glow: rgba(255,215,64,0.5);
+            --leaf: #66bb6a;
+            --sun: #ffeb3b;
+        }
+        body {
+            margin: 0;
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #1b5e20, #2e7d32, #4caf50);
+            background-attachment: fixed;
+            color: var(--white);
+            line-height: 1.9;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* ذرات برگ، خورشید و باد در پس‌زمینه */
+        .renewable-particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .leaf-particle {
+            position: absolute;
+            font-size: 32px;
+            color: var(--leaf);
+            opacity: 0.7;
+            animation: leafFall 22s infinite linear;
+            text-shadow: 0 0 15px var(--glow);
+        }
+        .sun-particle {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle, var(--sun), transparent);
+            border-radius: 50%;
+            box-shadow: 0 0 35px var(--sun);
+            animation: sunFloat 25s infinite linear;
+            opacity: 0.6;
+        }
+        .wind-particle {
+            position: absolute;
+            font-size: 28px;
+            color: rgba(255,255,255,0.6);
+            opacity: 0.5;
+            animation: windBlow 18s infinite linear;
+        }
+        @keyframes leafFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        @keyframes sunFloat {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) translateX(150px); opacity: 0; }
+        }
+        @keyframes windBlow {
+            0% { transform: translateX(-100px) translateY(50vh); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateX(100vw) translateY(50vh); opacity: 0; }
+        }
+        /* دکمه بازگشت */
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 32px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: all 0.4s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .home-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(76,175,80,0.6);
+        }
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.4));
+            color: white;
+            text-align: center;
+            padding: 120px 20px 90px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+        header h1 {
+            font-size: 3.8em;
+            font-weight: 800;
+            margin: 0;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.7);
+        }
+        header p {
+            font-size: 1.6em;
+            max-width: 1000px;
+            margin: 30px auto 0;
+            opacity: 0.95;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 20px;
+            z-index: 1;
+        }
+        .intro {
+            background: rgba(255,255,255,0.15);
+            padding: 50px;
+            border-radius: 35px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            margin-bottom: 70px;
+            text-align: center;
+            font-size: 1.3em;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            font-weight: 800;
+            margin: 80px 0 50px;
+            color: var(--white);
+            text-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            width: 160px;
+            height: 8px;
+            background: var(--accent);
+            display: block;
+            margin: 20px auto 0;
+            border-radius: 4px;
+            box-shadow: 0 0 20px var(--glow);
+        }
+        .types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin: 60px 0;
+        }
+        .type-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .type-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(76,175,80,0.5);
+        }
+        .type-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 5px solid var(--accent);
+            transition: transform 0.5s;
+        }
+        .type-card:hover img {
+            transform: scale(1.1);
+        }
+        .type-card h3 {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .type-card p {
+            padding: 30px;
+            font-size: 1.2em;
+            color: var(--light);
+        }
+        .reasons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin: 70px 0;
+        }
+        .reason {
+            background: rgba(255,255,255,0.15);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .reason i {
+            font-size: 70px;
+            color: var(--accent);
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px var(--glow);
+        }
+        .reason h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+        .iran-section {
+            background: rgba(255,255,255,0.15);
+            padding: 60px;
+            border-radius: 35px;
+            margin: 80px 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .iran-section h2 {
+            color: var(--white);
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 50px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.6);
+        }
+        .strengths, .challenges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .point {
+            background: rgba(255,255,255,0.2);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .point h3 {
+            font-size: 1.6em;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        .strengths .point {
+            border-right: 8px solid var(--secondary);
+        }
+        .challenges .point {
+            border-right: 8px solid #ff8a65;
+        }
+        .conclusion {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            color: white;
+            padding: 90px 60px;
+            border-radius: 40px;
+            text-align: center;
+            margin: 100px 0;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+            font-size: 1.4em;
+        }
+        .conclusion h2 {
+            font-size: 3.2em;
+            margin-bottom: 40px;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+        .call-to-action {
+            margin-top: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            line-height: 2.2;
+        }
+        footer {
+            text-align: center;
+            padding: 50px;
+            background: var(--dark);
+            color: white;
+            font-size: 1.2em;
+        }
+        /* کنترل موزیک */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1.1em;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .music-control button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.8em; }
+            .section-title { font-size: 2.4em; }
+            .type-card img { height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ذرات برگ، خورشید و باد -->
+<div class="renewable-particles" id="renewable-particles"></div>
+
+<!-- دکمه بازگشت -->
+<a href="index.html" class="home-btn">
+    <i class="fas fa-home"></i> بازگشت به خانه
+</a>
+
+<header>
+    <h1>🌍 انرژی‌های تجدیدپذیر: نه فقط یک گزینه — بلکه تنها راه آینده</h1>
+    <p>ما دیگر در عصر «انتخاب» انرژی نیستیم. ما در عصر ضرورت تحول انرژی هستیم.</p>
+	<p>منبع : سایت چشم‌انداز انرژی نوین <a href="https://energyhorizon.ir/news/%D8%A7%D9%86%D8%B1%DA%98%DB%8C-%D8%AA%D8%AC%D8%AF%DB%8C%D8%AF%D9%BE%D8%B0%DB%8C%D8%B1-%DA%86%DB%8C%D8%B3%D8%AA-%D9%85%D8%B9%D8%B1%D9%81%DB%8C-%D8%A7%D9%86%D9%88%D8%A7%D8%B9-%D8%A2%D9%86-%D9%85%D8%B2%D8%A7%DB%8C%D8%A7-%D9%88-%DA%86%D8%A7%D9%84%D8%B4-%D9%87%D8%A7">ورود به سایت</a> نکته متن موجود در این صفحه خلاصه و نتیجه صفحه اصلی است</p>
+</header>
+
+<div class="container">
+    <div class="intro">
+        <p>سالانه بیش از ۳۵ میلیارد تن دی‌اکسید کربن به جو زمین وارد می‌شود — عمدتاً از سوخت‌های فسیلی. در همین حال، قیمت‌های انرژی نوسان می‌کند، وابستگی‌های ژئوپلیتیکی عمیق‌تر می‌شوند، و منابع غیرقابل‌تجدید روزبه‌روز کم‌تر می‌شوند.</p>
+        <p><strong>اما خبر خوب این است: راه‌حل در دستان ماست — و اسم آن، انرژی‌های تجدیدپذیر است.</strong></p>
+    </div>
+
+    <h2 class="section-title">🔋 انرژی‌های تجدیدپذیر چیستند؟</h2>
+    <p style="text-align:center;font-size:1.3em;max-width:900px;margin:0 auto 60px;color:var(--light);">
+        منابعی که به‌طور طبیعی و پیوسته تجدید می‌شوند و در فرآیند تولید انرژی، آلایندگی یا کربن تقریباً صفر دارند.
+    </p>
+
+    <div class="types">
+        <div class="type-card">
+            <img src="https://araminit.com/wp-content/uploads/2025/07/%D9%BE%D9%86%D9%84-%D8%AE%D9%88%D8%B1%D8%B4%DB%8C%D8%AF%DB%8C-%D8%A7%DB%8C%D8%B1%D8%A7%D9%86%DB%8C.jpg" alt="پنل خورشیدی در ایران">
+            <h3>خورشیدی</h3>
+            <p>فتوولتائیک و حرارتی — فراوان‌ترین منبع انرژی روی زمین</p>
+        </div>
+        <div class="type-card">
+            <img src="https://khazarnama.ir/wp-content/uploads/2024/03/19061737_454.jpeg" alt="توربین بادی منجیل">
+            <h3>بادی</h3>
+            <p>توربین‌های بادی در خشکی و دریا</p>
+        </div>
+        <div class="type-card">
+            <img src="https://farhadyazdi.com/wp-content/uploads/2012/09/three-gorges-dam.jpg" alt="سد هیدروالکتریک">
+            <h3>آبی</h3>
+            <p>هیدروالکتریک، جزر و مدی</p>
+        </div>
+        <div class="type-card">
+            <img src="https://greenpowercapital.net/wp-content/uploads/2025/06/1-7-700x394.png" alt="زیست توده">
+            <h3>زیست‌توده</h3>
+            <p>از پسماندهای کشاورزی و شهری</p>
+        </div>
+        <div class="type-card">
+            <img src="https://blog.faradars.org/wp-content/uploads/2018/08/Geothermal-power-plant.jpg" alt="انرژی زمین گرمایی">
+            <h3>زمین‌گرمایی</h3>
+            <p>گرمای درون زمین</p>
+        </div>
+    </div>
+
+    <h2 class="section-title">🌞 چرا الان وقت تغییر است؟</h2>
+    <div class="reasons">
+        <div class="reason">
+            <i class="fas fa-chart-line"></i>
+            <h3>قیمت‌ها سقوط کرده‌اند</h3>
+            <p>هزینه تولید برق از پنل خورشیدی در دهه گذشته بیش از ۹۰٪ کاهش یافته است. امروز برق خورشیدی در بسیاری از کشورها ارزان‌تر از گاز و زغال‌سنگ است!</p>
+        </div>
+        <div class="reason">
+            <i class="fas fa-cogs"></i>
+            <h3>فناوری‌ها آماده‌اند</h3>
+            <p>باتری‌های ذخیره‌سازی، خانه‌های هوشمند سبز، پنل‌های قابل انعطاف — همه چیز امروز در دسترس است.</p>
+        </div>
+        <div class="reason">
+            <i class="fas fa-users"></i>
+            <h3>شما هم می‌توانید مشارکت کنید</h3>
+            <p>نصب سیستم خانگی، سرمایه‌گذاری در کوپراتیوها، حمایت از شرکت‌های سبز — هر قدمی تأثیرگذار است.</p>
+        </div>
+    </div>
+
+    <div class="iran-section">
+        <h2>وضعیت انرژی‌های تجدیدپذیر در ایران</h2>
+        <div class="strengths">
+            <div class="point">
+                <h3>نقاط قوت</h3>
+                <p>تابش خورشیدی بالا (۳۰۰ روز آفتابی)، بادهای مناسب، ظرفیت زیست‌توده، هدف دولت برای ۵۰۰۰ مگاوات تا ۱۴۰۹</p>
+            </div>
+        </div>
+        <div class="challenges">
+            <div class="point">
+                <h3>چالش‌ها</h3>
+                <p>کمبود سرمایه‌گذاری در شبکه هوشمند، فرآیندهای طولانی مجوز، آگاهی عمومی پایین</p>
+            </div>
+        </div>
+        <p style="text-align:center;margin-top:50px;font-size:1.4em;color:var(--light);">
+            با این حال، هزاران خانوار ایرانی با نصب پنل خورشیدی، مصرف خود را ۳۰ تا ۱۰۰٪ کاهش داده‌اند.
+        </p>
+    </div>
+
+    <div class="conclusion">
+        <h2>🌱 انرژی تجدیدپذیر = یک سبک زندگی</h2>
+        <p>این بیش از یک فناوری است — یک نگرش است:</p>
+        <p>نگرشی که به دنبال استقلال انرژی است، نه وابستگی.<br>
+        نگرشی که به آینده فرزندان فکر می‌کند.<br>
+        نگرشی که می‌داند هر خانه می‌تواند یک نیروگاه کوچک سبز باشد.</p>
+        <div class="call-to-action">
+            <p><strong>قدم بعدی شما چیست؟</strong></p>
+            <p>مشاوره رایگان بگیرید • با همسایگان همکاری کنید • گروه انرژی سبز بسازید • این مطلب را به اشتراک بگذارید</p>
+            <p>🌞 انرژی خورشید رایگان است. باد رایگان است. زمین‌گرمایی رایگان است.<br>
+            تنها چیزی که نیاز داریم، اراده برای استفاده درست از آن است.</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    © ۲۰۲۵ EnergyWise - همه حقوق محفوظ است
+</footer>
+
+<!-- کنترل موزیک -->
+<div class="music-control">
+    <i class="fas fa-music"></i> موزیک آرام طبیعت
+    <button onclick="toggleMusic()"><i id="play-icon" class="fas fa-play"></i></button>
+</div>
+
+<audio id="bg-music" loop>
+    <source src="https://aod.musiciom.ir/Album/Sound%20Nature/Sound%20Nature%20(1).mp3?host=musictag.ir" type="audio/mpeg">
+</audio>
+
+<script>
+// ذرات برگ، خورشید و باد
+function createRenewableParticle() {
+    const container = document.getElementById('renewable-particles');
+
+    if (Math.random() < 0.5) {
+        const leaf = document.createElement('div');
+        leaf.classList.add('leaf-particle');
+        leaf.textContent = '🍃';
+        leaf.style.left = Math.random() * 100 + 'vw';
+        leaf.style.animationDuration = Math.random() * 18 + 12 + 's';
+        container.appendChild(leaf);
+        setTimeout(() => leaf.remove(), 30000);
+    }
+
+    if (Math.random() < 0.4) {
+        const sun = document.createElement('div');
+        sun.classList.add('sun-particle');
+        sun.style.left = Math.random() * 100 + 'vw';
+        sun.style.animationDuration = Math.random() * 22 + 15 + 's';
+        container.appendChild(sun);
+        setTimeout(() => sun.remove(), 35000);
+    }
+
+    if (Math.random() < 0.3) {
+        const wind = document.createElement('div');
+        wind.classList.add('wind-particle');
+        wind.textContent = '💨';
+        wind.style.top = Math.random() * 100 + 'vh';
+        wind.style.animationDuration = Math.random() * 15 + 10 + 's';
+        container.appendChild(wind);
+        setTimeout(() => wind.remove(), 25000);
+    }
+}
+setInterval(createRenewableParticle, 700);
+
+// کنترل موزیک
+const audio = document.getElementById('bg-music');
+const playIcon = document.getElementById('play-icon');
+let isPlaying = false;
+
+function toggleMusic() {
+    if (isPlaying) {
+        audio.pause();
+        playIcon.classList.remove('fa-pause');
+        playIcon.classList.add('fa-play');
+        isPlaying = false;
+    } else {
+        audio.play();
+        playIcon.classList.remove('fa-play');
+        playIcon.classList.add('fa-pause');
+        isPlaying = true;
+    }
+}
+
+document.body.addEventListener('click', () => {
+    if (!isPlaying) {
+        toggleMusic();
+    }
+}, { once: true });
+</script>
+
+</body>
+</html>
