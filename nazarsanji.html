@@ -317,6 +317,25 @@
     <div id="commentsList"></div>
 </div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+    apiKey: "API_KEY",
+    authDomain: "PROJECT_ID.firebaseapp.com",
+    projectId: "PROJECT_ID",
+    storageBucket: "PROJECT_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+</script>
+
+<!-- اسکریپت اصلی سایت -->
 <script>
 // ایجاد ذرات انرژی
 function createParticle() {
@@ -357,24 +376,29 @@ stars.forEach(star => {
 });
 
 // بارگذاری نظرات (داده‌های قبلی پاک شده)
-function loadComments() {
+async function loadComments() {
     const commentsList = document.getElementById('commentsList');
     commentsList.innerHTML = '';
 
-    const comments = JSON.parse(localStorage.getItem('energywise_survey_comments')) || [];
+    const snapshot = await db.collection("nazarsanji")
+        .orderBy("createdAt", "desc")
+        .get();
 
-    if (comments.length === 0) {
+    if (snapshot.empty) {
         commentsList.innerHTML = '<p class="no-comments">هنوز نظری ثبت نشده است. اولین نفر باشید! 🌟</p>';
         return;
     }
 
-    comments.reverse().forEach((item) => {
+    snapshot.forEach(doc => {
+        const item = doc.data();
         const commentDiv = document.createElement('div');
         commentDiv.classList.add('comment');
-        
+
         let ratingStars = '';
         for (let i = 1; i <= 5; i++) {
-            ratingStars += i <= item.rating ? '<span style="color:var(--accent);">★</span>' : '<span style="color:rgba(255,255,255,0.3);">★</span>';
+            ratingStars += i <= item.rating
+                ? '<span style="color:var(--accent);">★</span>'
+                : '<span style="color:rgba(255,255,255,0.3);">★</span>';
         }
 
         commentDiv.innerHTML = `
@@ -385,38 +409,31 @@ function loadComments() {
             ${item.email ? `<div class="comment-email">${item.email}</div>` : ''}
             <div class="comment-text">${item.comment.replace(/\n/g, '<br>')}</div>
         `;
-        
+
         commentsList.appendChild(commentDiv);
     });
 }
 
-// ارسال نظر
-function submitComment() {
-    const fullnameInput = document.getElementById('fullname');
-    const emailInput = document.getElementById('email');
-    const commentInput = document.getElementById('comment');
 
+// ارسال نظر
+async function submitComment() {
     const fullname = fullnameInput.value.trim();
     const email = emailInput.value.trim();
     const comment = commentInput.value.trim();
 
     if (fullname === '' || comment === '' || selectedRating === 0) {
-        alert('لطفاً نام و نام خانوادگی، نظر و امتیاز خود را وارد کنید!');
+        alert('لطفاً نام و نظر و امتیاز را وارد کنید!');
         return;
     }
 
-    const newComment = {
-        fullname: fullname,
+    await db.collection("nazarsanji").add({
+        fullname,
         email: email || null,
-        comment: comment,
-        rating: selectedRating
-    };
+        comment,
+        rating: selectedRating,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
 
-    const comments = JSON.parse(localStorage.getItem('energywise_survey_comments')) || [];
-    comments.push(newComment);
-    localStorage.setItem('energywise_survey_comments', JSON.stringify(comments));
-
-    // پاک کردن فرم
     fullnameInput.value = '';
     emailInput.value = '';
     commentInput.value = '';
@@ -424,10 +441,10 @@ function submitComment() {
     stars.forEach(s => s.classList.remove('filled'));
     ratingText.textContent = "انتخاب کنید";
 
-    alert('نظر و امتیاز شما با موفقیت ثبت شد! بسیار سپاسگزاریم 🌱✨');
-
+    alert('نظر شما ثبت شد 🌱');
     loadComments();
 }
+
 
 // بارگذاری اولیه
 loadComments();
