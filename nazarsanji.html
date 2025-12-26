@@ -6,9 +6,6 @@
     <title>نظرسنجی کاربران | EnergyWise</title>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
         :root {
             --primary: #00796b;
@@ -33,6 +30,7 @@
             position: relative;
             overflow-x: hidden;
         }
+        /* ذرات انرژی درخشان */
         .particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -67,6 +65,7 @@
             font-weight: 500;
             margin-bottom: 60px;
             z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
         .form-container {
             background: rgba(255,255,255,0.15);
@@ -88,6 +87,7 @@
             font-weight: 700;
             color: var(--light);
             font-size: 1.3em;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
         input[type="text"],
         input[type="email"],
@@ -97,12 +97,22 @@
             border: 2px solid var(--secondary);
             border-radius: 20px;
             font-size: 1.2em;
+            transition: all 0.4s;
             background: rgba(255,255,255,0.2);
             color: var(--white);
+            font-weight: 500;
         }
-        input:focus, textarea:focus {
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
             border-color: var(--accent);
             box-shadow: 0 0 25px var(--glow);
+            background: rgba(255,255,255,0.3);
             outline: none;
         }
         textarea {
@@ -130,10 +140,12 @@
             color: #ccc;
             cursor: pointer;
             transition: all 0.4s;
+            text-shadow: 0 0 10px rgba(0,0,0,0.3);
         }
         .star:hover {
             transform: scale(1.2) rotate(15deg);
         }
+        .star.selected,
         .star.filled {
             color: var(--accent);
             text-shadow: 0 0 20px var(--glow);
@@ -143,6 +155,7 @@
             font-size: 1.6em;
             font-weight: bold;
             color: var(--accent);
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         button {
             background: linear-gradient(to right, var(--secondary), var(--accent));
@@ -153,6 +166,8 @@
             font-size: 1.4em;
             font-weight: bold;
             cursor: pointer;
+            transition: all 0.5s;
+            box-shadow: 0 10px 30px rgba(0,172,193,0.5);
             width: 100%;
             margin-top: 20px;
         }
@@ -170,7 +185,9 @@
             color: var(--white);
             text-align: center;
             font-size: 2.8em;
+            font-weight: 800;
             margin-bottom: 50px;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.6);
         }
         .comment {
             background: rgba(255,255,255,0.15);
@@ -197,6 +214,12 @@
         .comment-rating {
             color: var(--accent);
             font-size: 1.8em;
+            text-shadow: 0 0 15px var(--glow);
+        }
+        .comment-email {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.1em;
+            margin-top: 8px;
         }
         .comment-text {
             font-size: 1.3em;
@@ -208,6 +231,7 @@
             color: var(--light);
             font-style: italic;
             font-size: 1.6em;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         .home-btn {
             position: fixed;
@@ -232,16 +256,26 @@
         .home-btn:hover {
             background: var(--secondary);
             transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,172,193,0.6);
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.8em; }
+            .subtitle { font-size: 1.3em; }
+            .form-container { padding: 35px; }
+            .star { font-size: 3em; }
+            .comment { padding: 25px; }
         }
     </style>
 </head>
 <body>
+<!-- ذرات انرژی درخشان -->
 <div class="particles" id="particles"></div>
+<!-- دکمه بازگشت -->
 <a href="index.html" class="home-btn">
     <i class="fas fa-home"></i> بازگشت به خانه
 </a>
 <h1>نظرسنجی کاربران EnergyWise</h1>
-<p class="subtitle">نظر شما برای ما بسیار ارزشمند است! 🌱</p>
+<p class="subtitle">نظر شما برای ما بسیار ارزشمند است! لطفاً دیدگاه خود را با ما در میان بگذارید 🌱</p>
 
 <div class="form-container">
     <div class="form-group">
@@ -257,6 +291,7 @@
         <textarea id="comment" placeholder="نظر، پیشنهاد یا انتقاد خود را اینجا بنویسید..."></textarea>
     </div>
 
+    <!-- امتیازدهی -->
     <div class="rating-group">
         <div class="rating-label">نظر شما درباره این سایت چیست؟</div>
         <div class="stars">
@@ -274,23 +309,11 @@
 
 <div class="comments-section">
     <h2>نظرات و امتیازات کاربران</h2>
-    <div id="commentsList">در حال بارگذاری نظرات...</div>
+    <div id="commentsList"></div>
 </div>
 
 <script>
-// === تنظیمات Firebase ===
-const firebaseConfig = {
-  apiKey: "AIzaSyBfWtOyGeXPl1m6lBxw7g-94AynEowuEBk",
-  authDomain: "energywise-comments.firebaseapp.com",
-  projectId: "energywise-comments",
-  storageBucket: "energywise-comments.appspot.com",
-  messagingSenderId: "879747563602",
-  appId: "1:879747563602:web:380a4ed86f62cbb6ec5f8b"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// ذرات
+// ایجاد ذرات انرژی
 function createParticle() {
     const p = document.createElement('div');
     p.classList.add('particle');
@@ -299,101 +322,107 @@ function createParticle() {
     p.style.height = size + 'px';
     p.style.left = Math.random() * 100 + 'vw';
     p.style.animationDuration = Math.random() * 18 + 12 + 's';
+    p.style.opacity = Math.random() * 0.7 + 0.4;
     document.getElementById('particles').appendChild(p);
     setTimeout(() => p.remove(), 30000);
 }
 setInterval(createParticle, 300);
 
-// ستاره‌ها
+// انتخاب ستاره‌ها
 let selectedRating = 0;
 const stars = document.querySelectorAll('.star');
 const ratingText = document.getElementById('rating-text');
 
 stars.forEach(star => {
     star.addEventListener('click', () => {
-        selectedRating = parseInt(star.dataset.value);
-        stars.forEach((s, i) => {
-            s.classList.toggle('filled', i < selectedRating);
+        selectedRating = parseInt(star.getAttribute('data-value'));
+        stars.forEach(s => {
+            if (parseInt(s.getAttribute('data-value')) <= selectedRating) {
+                s.classList.add('filled');
+            } else {
+                s.classList.remove('filled');
+            }
         });
-        const texts = ["انتخاب کنید", "بد", "ضعیف", "متوسط", "خوب", "عالی"];
-        ratingText.textContent = texts[selectedRating];
+        if (selectedRating === 1) ratingText.textContent = "بد";
+        else if (selectedRating === 2) ratingText.textContent = "ضعیف";
+        else if (selectedRating === 3) ratingText.textContent = "متوسط";
+        else if (selectedRating === 4) ratingText.textContent = "خوب";
+        else if (selectedRating === 5) ratingText.textContent = "عالی";
     });
 });
 
-// نمایش نظرات از دیتابیس
-async function loadComments() {
+// بارگذاری نظرات از localStorage
+function loadComments() {
     const commentsList = document.getElementById('commentsList');
-    commentsList.innerHTML = '<p>در حال بارگذاری نظرات...</p>';
+    commentsList.innerHTML = '';
+    const comments = JSON.parse(localStorage.getItem('energywise_survey_comments')) || [];
 
-    try {
-        const snapshot = await db.collection("nazarsanji")
-            .orderBy("createdAt", "desc")
-            .get();
+    if (comments.length === 0) {
+        commentsList.innerHTML = '<p class="no-comments">هنوز نظری ثبت نشده است. اولین نفر باشید! 🌟</p>';
+        return;
+    }
 
-        if (snapshot.empty) {
-            commentsList.innerHTML = '<p class="no-comments">هنوز نظری ثبت نشده است. اولین نفر باشید! 🌟</p>';
-            return;
+    // نمایش جدیدترین نظر در بالا
+    comments.reverse().forEach((item) => {
+        const commentDiv = document.createElement('div');
+        commentDiv.classList.add('comment');
+
+        let ratingStars = '';
+        for (let i = 1; i <= 5; i++) {
+            ratingStars += i <= item.rating ? '<span style="color:var(--accent);">★</span>' : '<span style="color:rgba(255,255,255,0.3);">★</span>';
         }
 
-        commentsList.innerHTML = '';
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const div = document.createElement('div');
-            div.className = 'comment';
-            div.innerHTML = `
-                <div class="comment-header">
-                    <div>
-                        <div class="comment-name">${data.fullname}</div>
-                        ${data.email ? `<div class="comment-email">${data.email}</div>` : ''}
-                    </div>
-                    <div class="comment-rating">${'★'.repeat(data.rating) + '☆'.repeat(5 - data.rating)}</div>
+        commentDiv.innerHTML = `
+            <div class="comment-header">
+                <div>
+                    <div class="comment-name">${item.fullname}</div>
+                    ${item.email ? `<div class="comment-email">${item.email}</div>` : ''}
                 </div>
-                <div class="comment-text">${data.comment.replace(/\n/g, '<br>')}</div>
-            `;
-            commentsList.appendChild(div);
-        });
-    } catch (error) {
-        commentsList.innerHTML = '<p style="color:#ff8a80;">خطا در بارگذاری نظرات. قوانین Firestore را چک کنید.</p>';
-        console.error("Error loading comments:", error);
-    }
+                <div class="comment-rating">${ratingStars}</div>
+            </div>
+            <div class="comment-text">${item.comment.replace(/\n/g, '<br>')}</div>
+        `;
+
+        commentsList.appendChild(commentDiv);
+    });
 }
 
-// ارسال نظر
-async function submitComment() {
+// ارسال نظر و ذخیره در localStorage
+function submitComment() {
     const fullname = document.getElementById('fullname').value.trim();
     const email = document.getElementById('email').value.trim();
     const comment = document.getElementById('comment').value.trim();
 
-    if (!fullname || !comment || selectedRating === 0) {
-        alert('لطفاً همه موارد الزامی را پر کنید!');
+    if (fullname === '' || comment === '' || selectedRating === 0) {
+        alert('لطفاً نام، نظر و امتیاز خود را وارد کنید!');
         return;
     }
 
-    try {
-        await db.collection("nazarsanji").add({
-            fullname,
-            email: email || null,
-            comment,
-            rating: selectedRating,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
+    const newComment = {
+        fullname: fullname,
+        email: email || null,
+        comment: comment,
+        rating: selectedRating,
+        date: new Date().toLocaleDateString('fa-IR')
+    };
 
-        alert('نظر شما با موفقیت ثبت شد! 🌱✨');
-        document.getElementById('fullname').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('comment').value = '';
-        selectedRating = 0;
-        stars.forEach(s => s.classList.remove('filled'));
-        ratingText.textContent = "انتخاب کنید";
+    let comments = JSON.parse(localStorage.getItem('energywise_survey_comments')) || [];
+    comments.push(newComment);
+    localStorage.setItem('energywise_survey_comments', JSON.stringify(comments));
 
-        loadComments(); // بروزرسانی لیست
-    } catch (error) {
-        alert('خطا در ارسال نظر. اینترنت یا قوانین Firestore را چک کنید.');
-        console.error(error);
-    }
+    // پاک کردن فرم
+    document.getElementById('fullname').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('comment').value = '';
+    selectedRating = 0;
+    stars.forEach(s => s.classList.remove('filled'));
+    ratingText.textContent = "انتخاب کنید";
+
+    alert('نظر شما با موفقیت ثبت شد! ممنون از شما 🌱✨');
+    loadComments();
 }
 
-// بارگذاری اولیه
+// بارگذاری نظرات هنگام ورود به صفحه
 loadComments();
 </script>
 </body>
