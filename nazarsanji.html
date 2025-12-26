@@ -377,44 +377,40 @@ stars.forEach(star => {
 });
 
 // بارگذاری نظرات (داده‌های قبلی پاک شده)
+<script>
 async function loadComments() {
     const commentsList = document.getElementById('commentsList');
     commentsList.innerHTML = '';
 
-    const snapshot = await db.collection("nazarsanji")
+    const snapshot = await db
+        .collection("nazarsanji")
         .orderBy("createdAt", "desc")
         .get();
 
     if (snapshot.empty) {
-        commentsList.innerHTML = '<p class="no-comments">هنوز نظری ثبت نشده است. اولین نفر باشید! 🌟</p>';
+        commentsList.innerHTML =
+            '<p class="no-comments">هنوز نظری ثبت نشده است.</p>';
         return;
     }
 
     snapshot.forEach(doc => {
         const item = doc.data();
-        const commentDiv = document.createElement('div');
-        commentDiv.classList.add('comment');
+        if (!item.createdAt) return; // ← این خط نجات‌دهنده است
 
-        let ratingStars = '';
-        for (let i = 1; i <= 5; i++) {
-            ratingStars += i <= item.rating
-                ? '<span style="color:var(--accent);">★</span>'
-                : '<span style="color:rgba(255,255,255,0.3);">★</span>';
-        }
+        const div = document.createElement('div');
+        div.className = 'comment';
 
-        commentDiv.innerHTML = `
+        div.innerHTML = `
             <div class="comment-header">
                 <div class="comment-name">${item.fullname}</div>
-                <div class="comment-rating">${ratingStars}</div>
+                <div class="comment-rating">${'★'.repeat(item.rating)}</div>
             </div>
-            ${item.email ? `<div class="comment-email">${item.email}</div>` : ''}
-            <div class="comment-text">${item.comment.replace(/\n/g, '<br>')}</div>
+            <div class="comment-text">${item.comment}</div>
         `;
 
-        commentsList.appendChild(commentDiv);
+        commentsList.appendChild(div);
     });
 }
-
 const fullnameInput = document.getElementById('fullname');
 const emailInput = document.getElementById('email');
 const commentInput = document.getElementById('comment');
@@ -456,6 +452,7 @@ loadComments();
 
 </body>
 </html>
+
 
 
 
