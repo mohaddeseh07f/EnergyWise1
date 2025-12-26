@@ -376,8 +376,7 @@ stars.forEach(star => {
     });
 });
 
-// بارگذاری نظرات (داده‌های قبلی پاک شده)
-<script>
+// بارگذاری نظرات
 async function loadComments() {
     const commentsList = document.getElementById('commentsList');
     commentsList.innerHTML = '';
@@ -411,6 +410,7 @@ async function loadComments() {
         commentsList.appendChild(div);
     });
 }
+
 const fullnameInput = document.getElementById('fullname');
 const emailInput = document.getElementById('email');
 const commentInput = document.getElementById('comment');
@@ -452,6 +452,7 @@ loadComments();
 
 </body>
 </html>
+
 
 
 
